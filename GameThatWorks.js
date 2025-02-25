@@ -7,20 +7,29 @@ console.log("startup test");
 /*******************************************************/
 //variables
 
-var gameWidth = windowWidth;
-var gameHeight = windowHeight;
+const GAMEWIDTH = 500;
+const GAMEHEIGHT = 500;
+const PLAYERSPEED = 5;
+const PLAYERSIZE = 75;
+const COINSIZE = 25;
+
+
+var score = 0;
 /*******************************************************/
 //setup
 function setup() {
-  cnv = new Canvas(gameWidth, gameHeight)
-  player = new Sprite((width/2), (height/2), 75, 75, 'd');
+  cnv = new Canvas(GAMEWIDTH, GAMEHEIGHT)
+  player = new Sprite((GAMEWIDTH/2), (GAMEHEIGHT/2), PLAYERSIZE, PLAYERSIZE, 'd');
   player.color = 'red';
 
 
-  coin = new Sprite(random(5, 995), random(5, 995), 25, 'k');
-  coin.color = 'gold';
+  coingroup();
+  displayScore();
 
 }
+
+
+
 
 /*******************************************************/
 //game
@@ -28,9 +37,9 @@ function draw() {
     background('cyan');
   // Movement logic
   if (kb.pressing('left')) {
-    player.vel.x = -5;
+    player.vel.x = -PLAYERSPEED;
   } else if (kb.pressing('right')) {
-    player.vel.x = 5;
+    player.vel.x = PLAYERSPEED;
   }
 
   if (kb.released('left')) {
@@ -40,9 +49,9 @@ function draw() {
   }
 
   if (kb.pressing('up')) {
-    player.vel.y = -5;
+    player.vel.y = -PLAYERSPEED;
   } else if (kb.pressing('down')) {
-    player.vel.y = 5;
+    player.vel.y = PLAYERSPEED;
   }
 
   if (kb.released('up')) {
@@ -52,5 +61,23 @@ function draw() {
   }
 }
 /*******************************************************/
+//FUNCTIONS
+
+function coingroup(){
+  for (i = 0; i < 5; i++) {
+    coin = new Sprite(random(0, GAMEWIDTH), random(0, GAMEWIDTH), COINSIZE, 'k');
+    coin.color = 'gold';
+	  
+	  }
+}
+
+function displayScore(){
+  fill(0, 0, 0);
+  textSize(20);
+  text("Score: " + score, (GAMEWIDTH/2), (GAMEHEIGHT/2));
+}
+/*******************************************************/
+
+
 //END 
 /*******************************************************/
