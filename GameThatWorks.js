@@ -24,7 +24,7 @@ function setup() {
 
 
   coingroup();
-  displayScore();
+
 
 }
 
@@ -59,6 +59,8 @@ function draw() {
   } else if (kb.released('down')) {
     player.vel.y = 0;
   }
+
+  displayScore();
 }
 /*******************************************************/
 //FUNCTIONS
@@ -74,7 +76,7 @@ function coingroup(){
 function displayScore(){
   fill(0, 0, 0);
   textSize(20);
-  text("Score: " + score, (GAMEWIDTH/2), (GAMEHEIGHT/2));
+  text("Score: " + score, 5 ,30);
 }
 /*******************************************************/
 
