@@ -12,9 +12,12 @@ const GAMEHEIGHT = 500;
 const PLAYERSPEED = 5;
 const PLAYERSIZE = 75;
 const COINSIZE = 25;
+const COINTIME = 2000;
 
 
 var score = 0;
+var coin;
+
 /*******************************************************/
 //setup
 function setup() {
@@ -77,6 +80,22 @@ function displayScore(){
   fill(0, 0, 0);
   textSize(20);
   text("Score: " + score, 5 ,30);
+}
+
+
+function coincreate(){
+  coin = new Sprite(random(0, GAMEHEIGHT), random(0, GAMEWIDTH), COINSIZE, 'k');
+  coin.color = 'gold';
+  coin.spawntime = millis();
+  return (coin);
+
+}
+
+function CoinTime(){
+  if (_coin.spawntime + COINTIME <millis()){
+    return(true); //too old
+
+  }
 }
 /*******************************************************/
 
