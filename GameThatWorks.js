@@ -12,11 +12,12 @@ const GAMEHEIGHT = 500;
 const PLAYERSPEED = 5;
 const PLAYERSIZE = 75;
 const COINSIZE = 25;
-const COINTIME = 2000;
+const COINTIME = 4000;
 
 
 var score = 0;
 var coin;
+var gameState = "play";
 
 /*******************************************************/
 //setup
@@ -25,10 +26,17 @@ function setup() {
   player = new Sprite((GAMEWIDTH/2), (GAMEHEIGHT/2), PLAYERSIZE, PLAYERSIZE, 'd');
   player.color = 'red';
 
+  coins = new Group();
 
-  coingroup();
+  coins.add(coincreate());
 
+  player.collides(coins, pointup);
+  function pointup (collider1,collider2){
+    //delete hit coin
+    collider2.remove();
+    score++;
 
+  }
 }
 
 
@@ -38,6 +46,56 @@ function setup() {
 //game
 function draw() {
     background('cyan');
+  if (gameState == "play"){
+    runGame(); // play the game if you haven't lost
+  }   else if (gameState == "lose"){
+        loseScreen();
+  }
+ 
+}
+/*******************************************************/
+//FUNCTIONS
+
+function coincreate(){
+  coin = new Sprite(random(0, GAMEHEIGHT), random(0, GAMEWIDTH), COINSIZE, 'k');
+  coin.color = 'gold';
+  coin.spawntime = millis();
+  return (coin);
+
+}
+
+function runGame(){
+    if (random(0,1000)<20){
+          coins.add(coincreate());
+    }
+    for (var i = 0; i<coins.length; i++){
+      if(CoinTime(coins[i])){
+        coins[i].remove();
+        gameState = "lose";
+      }
+    }
+    playermove();
+    displayScore();
+    console.log(gameState);
+}
+
+function displayScore(){
+  fill(0, 0, 0);
+  textSize(20);
+  text("Score: " + score, 5 ,30);
+}
+
+
+function CoinTime(coin){
+  if (coin.spawntime + COINTIME <millis()){
+    return(true); //too old
+
+  }
+
+    return(false); //young and fine
+}
+
+function playermove(){
   // Movement logic
   if (kb.pressing('left')) {
     player.vel.x = -PLAYERSPEED;
@@ -63,39 +121,18 @@ function draw() {
     player.vel.y = 0;
   }
 
-  displayScore();
-}
-/*******************************************************/
-//FUNCTIONS
-
-function coingroup(){
-  for (i = 0; i < 5; i++) {
-    coin = new Sprite(random(0, GAMEWIDTH), random(0, GAMEWIDTH), COINSIZE, 'k');
-    coin.color = 'gold';
-	  
-	  }
 }
 
-function displayScore(){
-  fill(0, 0, 0);
-  textSize(20);
-  text("Score: " + score, 5 ,30);
-}
+function loseScreen(){
+	background('red');
+	player.remove();
+	coins.remove();
+	fill(0, 0, 0);
+	textSize(50);
+	text("You missed a coin! ", 10,100);
+	textSize(100);
 
-
-function coincreate(){
-  coin = new Sprite(random(0, GAMEHEIGHT), random(0, GAMEWIDTH), COINSIZE, 'k');
-  coin.color = 'gold';
-  coin.spawntime = millis();
-  return (coin);
-
-}
-
-function CoinTime(){
-  if (_coin.spawntime + COINTIME <millis()){
-    return(true); //too old
-
-  }
+	text("Score: " + score, 10,200);
 }
 /*******************************************************/
 
